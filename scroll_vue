@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			.qq_drag{
+				position: relative;
+			    display: inline-block;
+				padding: 40px 90px;
+			}
+			.qq_drag .showImgs{
+				width:500px;/*定义图片宽高*/
+				height:500px;/*定义图片宽高*/
+				overflow:hidden;
+			    border: 17px solid #d2c2c2;
+			}
+			.qq_drag .marquee{
+				height:100%;
+				width: 1000000px;
+				font-size: 0;
+				line-height: 0;
+			}
+			
+			.qq_drag .imgblock{
+				height: 500px;/*定义图片宽高*/
+				width: 500px;/*定义图片宽高*/
+			    line-height: 500px;/*定义图片宽高*/
+			    display: inline-block;
+    			vertical-align: middle;
+    			text-align: center;
+			}
+			.qq_drag .marquee img{
+				max-height:100%;
+				max-width: 100%;
+				display: inline-block;
+    			vertical-align: middle;
+			}
+			.qq_drag .leftdd,.qq_drag .rightdd{
+				position: absolute;
+				top: 50%;
+				left: 0;
+				margin-top:-25px;
+				display: block;
+				width: 50px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				font-size: 16px;
+			    background: #ff6e6e;
+			    color: #ffffff;
+			    border-radius: 50%;
+			    cursor: pointer;
+			}
+			.qq_drag .rightdd{
+				right:0;
+				left: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="qq_drag" id="vueapp">
+			<span class="leftdd" v-on:click="leftClick">左</span>
+			<span class="rightdd" v-on:click="rightClick">右</span>
+			<div class="showImgs">
+				<div class="marquee" v-bind:style="{'marginLeft':marqueeMarginLeft+'px'}">
+					<div class="imgblock" v-for='x in imgList'>
+						<img v-bind:src="x"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/vue.js"></script>
+	<script>
+	var vm  = new Vue({
+		el:'#vueapp',
+		data:{
+			imgList:[
+			'img/AR06.png',
+			'img/AR06DA.png',
+			'img/n_wrong.png'
+			],
+			marqueeMarginLeft:0
+		},
+		methods:{
+			leftClick:function(){//点击左
+		        var scrollwidth =$('.qq_drag .showImgs').width();
+				var marqueeWidth = (scrollwidth*(vm.imgList.length-1));//2为图片数量
+				if(vm.marqueeMarginLeft == -marqueeWidth){
+        			vm.marqueeMarginLeft = 0;
+        		}else{
+        			vm.marqueeMarginLeft -= scrollwidth;
+        		}
+			},
+			rightClick:function(){//点击右
+		        var scrollwidth =$('.qq_drag .showImgs').width();
+				var marqueeWidth = (scrollwidth*(vm.imgList.length-1));//2为图片数量
+				if(vm.marqueeMarginLeft==0){
+        			vm.marqueeMarginLeft = -marqueeWidth;
+        		}else{
+        			vm.marqueeMarginLeft += scrollwidth;
+        		}
+			}
+		}
+	})
+	</script>
+</html>
